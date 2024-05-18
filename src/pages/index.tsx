@@ -22,19 +22,27 @@ const Home = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.board}>
-        {board.map((row, y) =>
-          row.map((color, x) => (
-            <div
-              className={styles.bomb}
-              key={`${x}-${y}`}
-              onClick={() => onClick(x, y)}
-              style={{ backgroundPosition: color * -30 + 30 }}
-            >
-              {color === -1 && <div className={styles.stone} />}
-            </div>
-          )),
-        )}
+      <div className={styles.frame}>
+        <div className={styles.smilearea}>
+          <div className={styles.bombcount} />
+          <div className={styles.smile} />
+          <div className={styles.timer} />
+        </div>
+
+        <div className={styles.board}>
+          {board.map((row, y) =>
+            row.map((color, x) => (
+              <div
+                className={styles.bomb}
+                key={`${x}-${y}`}
+                onClick={() => onClick(x, y)}
+                style={{ backgroundPosition: color * -30 + 30 }}
+              >
+                {color === -1 && <div className={styles.stone} />}
+              </div>
+            )),
+          )}
+        </div>
       </div>
     </div>
   );

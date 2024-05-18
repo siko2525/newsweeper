@@ -8,6 +8,16 @@
   padding: 0 0.5rem;
 }
 
+.frame {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  width: 300px;
+  height: 370px;
+  background-color: #ccc;
+}
+
 .board {
   display: flex;
   flex-wrap: wrap;
@@ -15,10 +25,12 @@
   justify-content: center;
   width: 270px;
   height: 270px;
+  margin-bottom: 50px;
   background-color: #ccc;
 }
 
 .bomb {
+  display: flex;
   width: 30px;
   height: 30px;
   background: url('icons/icons.png') no-repeat;
@@ -30,8 +42,46 @@
   align-items: center;
   justify-content: center;
   width: 30px;
-  max-width: 270px;
   height: 30px;
+  margin-top: auto;
   background-color: #4e4848;
   border: solid 1px #595555;
+}
+
+.bombcount {
+  display: flex;
+  width: 80px;
+  height: 39px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 21px;
+  background-color: black;
+}
+
+.smile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 39px;
+  margin-left: 30px;
+  background: url('icons/icons.png') no-repeat;
+  background-color: aqua;
+  background-position: -328px;
+}
+
+.smilearea {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 300px;
+  height: 80px;
+}
+
+.timer {
+  display: flex;
+  width: 80px;
+  height: 39px;
+  margin-left: 30px;
+  background-color: black;
 }
