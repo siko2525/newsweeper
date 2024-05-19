@@ -2,7 +2,11 @@ import { useState } from 'react';
 import styles from './index.module.css';
 
 const Home = () => {
-  const [board, setBoard] = useState([
+  // 0 -> 未クリック
+  // 1 -> 左クリック
+  // 2 -> はてな
+  // 3 -> 旗
+  const [board, setBoard] = useState<(0 | 1 | 2 | 3)[][]>([
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -13,6 +17,25 @@ const Home = () => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]);
+
+  const [bombMap, setBombMap] = useStat([
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ]);
+
+  const isPlaying = board.some((row) => row.some((input) => input !== 0));
+  const isFailure = board.some((row, y) => row.some((input) => input === 1 && bombMap[y][x] === 1));
+
+  const bombCount = 10;
+  // 0 -> ボム無
+  // 1 -> ボム有
 
   const onClick = (x: number, y: number) => {
     const newBoard = structuredClone(board);
