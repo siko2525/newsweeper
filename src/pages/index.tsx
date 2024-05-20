@@ -53,10 +53,10 @@ const Home = () => {
     [1, -1],
   ];
 
-  const isPlaying = userInput.some((row) => row.some((input) => input !== 0));
-  const isFailure = userInput.some((row, y) =>
-    row.some((input, x) => input === 1 && bombMap[y][x] === 1),
-  );
+  // const isPlaying = userInput.some((row) => row.some((input) => input !== 0));
+  // const isFailure = userInput.some((row, y) =>
+  //   row.some((input, x) => input === 1 && bombMap[y][x] === 1),
+  // );
   //bombを作る
   const bombCreate = (bombMap: number[][], x: number, y: number) => {
     console.log(2);
