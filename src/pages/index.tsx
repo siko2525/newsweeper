@@ -58,7 +58,8 @@ const Home = () => {
   //   row.some((input, x) => input === 1 && bombMap[y][x] === 1),
   // );
   //bombを作る
-  const bombCreate = (bombMap: number[][], x: number, y: number) => {
+  const bombCreate = (bombMap: number[][], x: number, y: number, isExist: boolean) => {
+    if (isExist) return bombMap;
     console.log(2);
     let bombCount = 0;
     const newBombMap = structuredClone(bombMap);
@@ -79,15 +80,77 @@ const Home = () => {
     //flatで二次元配列を一次元にもってきたので、someを一個にできた
     const newBombMap = structuredClone(bombMap);
     const newUserInput = structuredClone(userInput);
-    newUserInput[y][x] = 1;
-    if (isExistBomb !== true) {
-      const newNewBombMap = bombCreate(newBombMap, x, y);
-      setBombMap(newNewBombMap);
+    const newNewBombMap = bombCreate(newBombMap, x, y, isExistBomb);
+    // if (isExistBomb !== true) {
+    //   const newNewBombMap = bombCreate(newBombMap, x, y);
+    //   setBombMap(newNewBombMap);
+    // } else {
+    //   const newNewBombMap = newBombMap;
+    // }
+    setBombMap(newNewBombMap);
+    let charge = 0;
+    for (const dir of directions) {
+      if (newNewBombMap[y + dir[0]] !== undefined && newNewBombMap[y + dir[0]][x + dir[1]] === 1) {
+        charge++;
+      }
+    }
+    console.log(charge);
+    if (charge === 0) {
+      endless(x, y, newUserInput, newNewBombMap, bombMap);
+    } else if (charge >= 1 || newNewBombMap[y][x] === 1) {
+      newUserInput[y][x] = 1;
     }
     setUserInput(newUserInput);
   };
 
-  const fusion = (x: number, y: number, newUserInput: number[][], newBombMap: number[][]) => {
+  const endless = (
+    x: number,
+    y: number,
+    newUserInput: number[][],
+    newBombMap: number[][],
+    board: number[][],
+  ) => {
+    if (newBombMap[y][x] === 1) return;
+    console.log(x, y);
+    if (newUserInput[y][x] === 1) return;
+    newUserInput[y][x] = 1;
+    let charge = 0;
+
+    if (board[y][x] !== 0 && board[y][x] !== -1) return;
+    console.log('oon');
+    for (const dir of directions) {
+      if (newBombMap[y + dir[0]] !== undefined && newBombMap[y + dir[0]][x + dir[1]] === 1) {
+        charge++;
+      }
+    }
+    if (charge === 0) {
+      for (const dir of directions) {
+        if (userInput[y + dir[0]] === undefined) {
+          continue;
+        }
+        const Y = y + dir[0];
+        const X = x + dir[1];
+        if (Y >= 0 && Y < newUserInput.length && X >= 0 && X < newUserInput[0].length) {
+          if (newUserInput[Y][X] === 1 || board[Y][X] >= 1 || newBombMap[Y][X] === 1) {
+            return;
+          }
+          console.log('uoon');
+          endless(X, Y, newUserInput, newBombMap, board);
+        }
+      }
+    }
+  };
+
+  const fusion = (
+    x: number,
+    y: number,
+    newUserInput: number[][],
+    newBombMap: number[][],
+    board: number[][],
+  ) => {
+    if (userInput[y][x] === 0) {
+      board[y][x] = -1;
+    }
     if (newBombMap[y][x] === 1 && newUserInput[y][x] === 1) {
       board[y][x] = 11;
       console.log(3);
@@ -103,13 +166,8 @@ const Home = () => {
     if (newUserInput[y][x] === 1) {
       let charge = 0;
       for (const dir of directions) {
-        if (
-          newBombMap[y + dir[0]] !== undefined &&
-          newBombMap[x + dir[1]] !== undefined &&
-          newBombMap[y + dir[0]][x + dir[1]] === 1
-        ) {
+        if (newBombMap[y + dir[0]] !== undefined && newBombMap[y + dir[0]][x + dir[1]] === 1)
           charge++;
-        }
       }
       board[y][x] = charge;
     }
@@ -117,9 +175,10 @@ const Home = () => {
 
   for (let x = 0; x < 9; x++) {
     for (let y = 0; y < 9; y++) {
-      fusion(x, y, userInput, bombMap);
+      fusion(x, y, userInput, bombMap, board);
     }
   }
+
   return (
     <div className={styles.container}>
       <div className={styles.frame}>
