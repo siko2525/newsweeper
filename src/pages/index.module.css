@@ -34,6 +34,7 @@
   width: 30px;
   height: 30px;
   background: url('icons/icons.png') no-repeat;
+  background-position: -200px;
   border: solid 1px #595555;
 }
 
@@ -48,7 +49,7 @@
   border: solid 1px #595555;
 }
 
-.bombcount {
+.bombCount {
   display: flex;
   width: 80px;
   height: 39px;
@@ -70,7 +71,7 @@
   background-position: -328px;
 }
 
-.smilearea {
+.smileArea {
   display: flex;
   align-items: center;
   justify-content: flex-start;
