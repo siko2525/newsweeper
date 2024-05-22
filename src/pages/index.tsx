@@ -110,36 +110,57 @@ const Home = () => {
     newBombMap: number[][],
     board: number[][],
   ) => {
-    if (newBombMap[y][x] === 1) return;
-    console.log(x, y);
-    if (newUserInput[y][x] === 1) return;
+    if (newBombMap[y][x] === 1 || newUserInput[y][x] === 1) return;
     newUserInput[y][x] = 1;
-    let charge = 0;
+    let charge = 0; // 周囲の爆弾の数を数える
+    directions.forEach(([dy, dx]) => {
+      const Y = y + dy;
+      const X = x + dx;
+      if (Y >= 0 && Y < newUserInput.length && X >= 0 && X < newUserInput[0].length) {
+        //[0]をつけると列の数
+        if (newBombMap[Y][X] === 1) {
+          charge++;
+        }
+      }
+    });
 
-    if (board[y][x] !== 0 && board[y][x] !== -1) return;
-    console.log('oon');
-    for (const dir of directions) {
-      if (newBombMap[y + dir[0]] !== undefined && newBombMap[y + dir[0]][x + dir[1]] === 1) {
-        charge++;
-      }
-    }
     if (charge === 0) {
-      for (const dir of directions) {
-        if (userInput[y + dir[0]] === undefined) {
-          continue;
+      // 周囲に爆弾がなければ隣接するセルも開く
+      directions.forEach(([dy, dx]) => {
+        const ny = y + dy;
+        const nx = x + dx;
+        if (ny >= 0 && ny < newUserInput.length && nx >= 0 && nx < newUserInput[0].length) {
+          endless(nx, ny, newUserInput, newBombMap, board);
         }
-        const Y = y + dir[0];
-        const X = x + dir[1];
-        if (Y >= 0 && Y < newUserInput.length && X >= 0 && X < newUserInput[0].length) {
-          if (newUserInput[Y][X] === 1 || board[Y][X] >= 1 || newBombMap[Y][X] === 1) {
-            return;
-          }
-          console.log('uoon');
-          endless(X, Y, newUserInput, newBombMap, board);
-        }
-      }
+      });
     }
   };
+  //   let charge = 0;
+
+  //   if (board[y][x] !== 0 && board[y][x] !== -1) return;
+  //   console.log('oon');
+  //   for (const dir of directions) {
+  //     if (newBombMap[y + dir[0]] !== undefined && newBombMap[y + dir[0]][x + dir[1]] === 1) {
+  //       charge++;
+  //     }
+  //   }
+  //   if (charge === 0) {
+  //     for (const dir of directions) {
+  //       if (userInput[y + dir[0]] === undefined) {
+  //         continue;
+  //       }
+  //       const Y = y + dir[0];
+  //       const X = x + dir[1];
+  //       if (Y >= 0 && Y < newUserInput.length && X >= 0 && X < newUserInput[0].length) {
+  //         if (newUserInput[Y][X] === 1 || board[Y][X] >= 1 || newBombMap[Y][X] === 1) {
+  //           return;
+  //         }
+  //         console.log('uoon');
+  //         endless(X, Y, newUserInput, newBombMap, board);
+  //       }
+  //     }
+  //   }
+  // };
 
   const fusion = (
     x: number,
