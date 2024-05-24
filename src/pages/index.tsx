@@ -94,13 +94,26 @@ const Home = () => {
         charge++;
       }
     }
-    console.log(charge);
-    if (charge === 0) {
+    if (newNewBombMap[y][x] === 1) {
+      newUserInput[y][x] = 1;
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+          if (newNewBombMap[i][j] === 1) {
+            board[i][j] = 11;
+          }
+        }
+      }
+    } else if (charge === 0) {
       endless(x, y, newUserInput, newNewBombMap, bombMap);
-    } else if (charge >= 1 || newNewBombMap[y][x] === 1) {
+    } else if (charge >= 1) {
       newUserInput[y][x] = 1;
     }
     setUserInput(newUserInput);
+    for (let i = 0; i < 9; i++) {
+      for (let j = 0; j < 9; j++) {
+        fusion(j, i, newUserInput, newNewBombMap, board);
+      }
+    }
   };
 
   const endless = (
@@ -169,28 +182,32 @@ const Home = () => {
     newBombMap: number[][],
     board: number[][],
   ) => {
-    if (userInput[y][x] === 0) {
+    let bombCount = 0;
+    if (userInput[y][x] === 0 && board[y][x] !== 11) {
       board[y][x] = -1;
-    }
-    if (newBombMap[y][x] === 1 && newUserInput[y][x] === 1) {
-      board[y][x] = 11;
-      console.log(3);
-      for (let x = 0; x < 9; x++) {
-        for (let y = 0; y < 9; y++) {
-          if (newBombMap[y][x] === 1 && newUserInput[y][x] === 0) {
-            board[y][x] = 11;
-          }
-        }
-      }
-      return;
     }
     if (newUserInput[y][x] === 1) {
       let charge = 0;
       for (const dir of directions) {
-        if (newBombMap[y + dir[0]] !== undefined && newBombMap[y + dir[0]][x + dir[1]] === 1)
+        if (newBombMap[y + dir[0]] !== undefined && newBombMap[y + dir[0]][x + dir[1]] === 1) {
           charge++;
+        }
       }
       board[y][x] = charge;
+    }
+    if (newBombMap[y][x] === 1 && newUserInput[y][x] === 1) {
+      board[y][x] = 11;
+      for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+          if (newBombMap[i][j] === 1) {
+            board[i][j] = 11;
+            bombCount++;
+            console.log(bombCount);
+          }
+        }
+      }
+
+      return;
     }
   };
 
