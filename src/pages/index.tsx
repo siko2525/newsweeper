@@ -53,6 +53,19 @@ const Home = () => {
     [1, -1],
   ];
 
+  const clickBomb: number[][] = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+  ];
+
+  let isEnd = 0;
   // const isPlaying = userInput.some((row) => row.some((input) => input !== 0));
   // const isFailure = userInput.some((row, y) =>
   //   row.some((input, x) => input === 1 && bombMap[y][x] === 1),
@@ -197,6 +210,8 @@ const Home = () => {
     }
     if (newBombMap[y][x] === 1 && newUserInput[y][x] === 1) {
       board[y][x] = 11;
+      clickBomb[y][x] = 1;
+      isEnd = 1;
       for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
           if (newBombMap[i][j] === 1) {
@@ -234,6 +249,7 @@ const Home = () => {
                 key={`${x}-${y}`}
                 onClick={() => onClick(x, y)}
                 style={{ backgroundPosition: color * -30 + 30 }}
+                style={{ backgroundColor: clickBomb[y][x] === 4 ? 'red' }}
               >
                 {color === -1 && <div className={styles.stone} />}
               </div>
