@@ -16,7 +16,9 @@
   width: 310px;
   height: 420px;
   background-color: #ccc;
-  border: 2px solid #7b7b7b;
+  border: 7px solid #7b7b7b;
+  border-top-color: #fff;
+  border-left-color: #fff;
   box-shadow: 2px 2px 5px #000;
 }
 
@@ -26,11 +28,10 @@
   align-items: center;
   width: 300px;
   height: 300px;
-  margin-right: 10px;
-  margin-bottom: 50px;
-  margin-left: 10px;
-  background-color: #ccc;
-  border: solid 5px #7b7b7b;
+  margin: 6px 7px 50px;
+  border: solid 6px #7b7b7b;
+  border-right-color: #fff;
+  border-bottom-color: #fff;
 }
 
 .bomb {
@@ -40,8 +41,9 @@
   background: url('icons/icons.png') no-repeat;
   background-color: #d1d1d1;
   background-position: -300px;
-  border: 2px solid #fff;
-  border-color: #fff #7b7b7b #7b7b7b #fff;
+  border: 2px solid #7b7b7b;
+  border-top-color: #fff;
+  border-left-color: #fff;
 }
 
 .stone {
@@ -52,16 +54,18 @@
   height: 30px;
   margin-top: auto;
   background-color: #a11616;
-  border: solid 3px #bebbbb;
+  border: solid 2px #7b7b7b;
+  border-top-color: #fff;
+  border-left-color: #fff;
 }
 
 .bombCount {
   display: flex;
   width: 80px;
-  height: 39px;
+  height: 50px;
   margin-top: 10px;
   margin-bottom: 10px;
-  margin-left: 5px;
+  margin-left: 10px;
   background-color: black;
 }
 
@@ -69,12 +73,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 35px;
-  height: 39px;
-  margin-left: 30px;
+  width: 50px;
+  height: 50px;
+  margin-left: 20px;
   background: url('icons/icons.png') no-repeat;
   background-color: aqua;
-  background-position: -328px;
+  background-position: -330px;
+  border: 10px solid #7b7b7b;
+  border-right-color: #fff;
+  border-bottom-color: #fff;
 }
 
 .smileArea {
@@ -83,14 +90,17 @@
   justify-content: flex-start;
   width: 300px;
   height: 80px;
-  margin: 13px;
-  border: solid 3px #595555;
+  margin: 7px;
+  border: 6px solid #7b7b7b;
+  border-right-color: #fff;
+  border-bottom-color: #fff;
 }
 
 .timer {
   display: flex;
   width: 80px;
-  height: 39px;
-  margin-left: 30px;
+  height: 50px;
+  margin-right: 10px;
+  margin-left: 20px;
   background-color: black;
 }

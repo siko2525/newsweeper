@@ -211,7 +211,7 @@ const Home = () => {
     if (newBombMap[y][x] === 1 && newUserInput[y][x] === 1) {
       board[y][x] = 11;
       clickBomb[y][x] = 1;
-      isEnd = 1;
+      // isEnd = 1;
       for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
           if (newBombMap[i][j] === 1) {
