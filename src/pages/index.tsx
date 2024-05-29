@@ -67,13 +67,12 @@ const Home = () => {
 
   // let isEnd = 0;
   // const isPlaying = userInput.some((row) => row.some((input) => input !== 0));
-  // const isFailure = userInput.some((row, y) =>
-  //   row.some((input, x) => input === 1 && bombMap[y][x] === 1),
-  // );
+  const isFailure = userInput.some((row, y) =>
+    row.some((input, x) => input === 1 && bombMap[y][x] === 1),
+  );
   //bombを作る
   const bombCreate = (bombMap: number[][], x: number, y: number, isExist: boolean) => {
     if (isExist) return bombMap;
-    console.log(2);
     let bombCount = 0;
     const newBombMap = structuredClone(bombMap);
     while (bombCount < 10) {
@@ -91,6 +90,9 @@ const Home = () => {
     // const isExistBomb = board.some((row) => row.some((input) => input === 1));
     const isExistBomb = userInput.flat().some((input) => input === 1);
     //flatで二次元配列を一次元にもってきたので、someを一個にできた
+    if (isFailure) {
+      return;
+    }
     const newBombMap = structuredClone(bombMap);
     const newUserInput = structuredClone(userInput);
     const newNewBombMap = bombCreate(newBombMap, x, y, isExistBomb);
@@ -161,32 +163,6 @@ const Home = () => {
       });
     }
   };
-  //   let charge = 0;
-
-  //   if (board[y][x] !== 0 && board[y][x] !== -1) return;
-  //   console.log('oon');
-  //   for (const dir of directions) {
-  //     if (newBombMap[y + dir[0]] !== undefined && newBombMap[y + dir[0]][x + dir[1]] === 1) {
-  //       charge++;
-  //     }
-  //   }
-  //   if (charge === 0) {
-  //     for (const dir of directions) {
-  //       if (userInput[y + dir[0]] === undefined) {
-  //         continue;
-  //       }
-  //       const Y = y + dir[0];
-  //       const X = x + dir[1];
-  //       if (Y >= 0 && Y < newUserInput.length && X >= 0 && X < newUserInput[0].length) {
-  //         if (newUserInput[Y][X] === 1 || board[Y][X] >= 1 || newBombMap[Y][X] === 1) {
-  //           return;
-  //         }
-  //         console.log('uoon');
-  //         endless(X, Y, newUserInput, newBombMap, board);
-  //       }
-  //     }
-  //   }
-  // };
 
   const fusion = (
     x: number,
@@ -211,7 +187,6 @@ const Home = () => {
     if (newBombMap[y][x] === 1 && newUserInput[y][x] === 1) {
       board[y][x] = 11;
       clickBomb[y][x] = 1;
-      // isEnd = 1;
       for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
           if (newBombMap[i][j] === 1) {
@@ -248,8 +223,10 @@ const Home = () => {
                 className={styles.bomb}
                 key={`${x}-${y}`}
                 onClick={() => onClick(x, y)}
-                style={{ backgroundPosition: color * -30 + 30 }}
-                // style={{ backgroundColor: clickBomb[y][x] === 4 ? 'red'}}
+                style={{
+                  backgroundPosition: color * -30 + 30,
+                  backgroundColor: clickBomb[y][x] === 1 ? 'red' : undefined,
+                }}
               >
                 {color === -1 && <div className={styles.stone} />}
               </div>
