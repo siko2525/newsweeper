@@ -70,6 +70,24 @@ const Home = () => {
   const isFailure = userInput.some((row, y) =>
     row.some((input, x) => input === 1 && bombMap[y][x] === 1),
   );
+
+  const rightClick = (
+    x: number,
+    y: number,
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+  ) => {
+    event.preventDefault();
+    const newUserInput = structuredClone(userInput);
+    if (isFailure) return;
+    if (newUserInput[y][x] === 3) {
+      newUserInput[y][x] = 0;
+    } else if (newUserInput[y][x] === 0) {
+      newUserInput[y][x] = 3;
+      board[y][x] = 10;
+    }
+    setUserInput(newUserInput);
+  };
+
   //bombを作る
   const bombCreate = (bombMap: number[][], x: number, y: number, isExist: boolean) => {
     if (isExist) return bombMap;
@@ -93,6 +111,7 @@ const Home = () => {
     if (isFailure) {
       return;
     }
+    rightClick(x, y, { preventDefault: () => {} } as React.MouseEvent<HTMLDivElement, MouseEvent>);
     const newBombMap = structuredClone(bombMap);
     const newUserInput = structuredClone(userInput);
     const newNewBombMap = bombCreate(newBombMap, x, y, isExistBomb);
@@ -223,6 +242,7 @@ const Home = () => {
                 className={styles.bomb}
                 key={`${x}-${y}`}
                 onClick={() => onClick(x, y)}
+                onContextMenu={(e) => rightClick(x, y, e)}
                 style={{
                   backgroundPosition: color * -30 + 30,
                   backgroundColor: clickBomb[y][x] === 1 ? 'red' : undefined,
