@@ -85,7 +85,6 @@ const Home = () => {
     } else if (newUserInput[y][x] === 0) {
       newUserInput[y][x] = 3;
       board[y][x] = 10;
-      console.table(board);
     }
     setUserInput(newUserInput);
   };
@@ -234,12 +233,13 @@ const Home = () => {
     }
   }
 
-  console.table(board);
   return (
     <div className={styles.container}>
       <div className={styles.frame}>
         <div className={styles.smileArea}>
-          <div className={styles.bombCount} />
+          <div className={styles.bombCount}>
+            {10 - board.flat().filter((cell) => cell === 10).length}
+          </div>
           <div className={styles.smile} />
           <div className={styles.timer} />
         </div>
