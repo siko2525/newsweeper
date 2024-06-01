@@ -85,6 +85,7 @@ const Home = () => {
     } else if (newUserInput[y][x] === 0) {
       newUserInput[y][x] = 3;
       board[y][x] = 10;
+      console.log(board);
     }
     setUserInput(newUserInput);
   };
