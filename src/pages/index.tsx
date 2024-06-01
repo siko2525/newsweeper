@@ -74,6 +74,7 @@ const Home = () => {
   const rightClick = (
     x: number,
     y: number,
+    board: number[][],
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
   ) => {
     event.preventDefault();
@@ -111,7 +112,10 @@ const Home = () => {
     if (isFailure) {
       return;
     }
-    rightClick(x, y, { preventDefault: () => {} } as React.MouseEvent<HTMLDivElement, MouseEvent>);
+    rightClick(x, y, board, { preventDefault: () => {} } as React.MouseEvent<
+      HTMLDivElement,
+      MouseEvent
+    >);
     const newBombMap = structuredClone(bombMap);
     const newUserInput = structuredClone(userInput);
     const newNewBombMap = bombCreate(newBombMap, x, y, isExistBomb);
@@ -242,7 +246,7 @@ const Home = () => {
                 className={styles.bomb}
                 key={`${x}-${y}`}
                 onClick={() => onClick(x, y)}
-                onContextMenu={(e) => rightClick(x, y, e)}
+                onContextMenu={(e) => rightClick(x, y, board, e)}
                 style={{
                   backgroundPosition: color * -30 + 30,
                   backgroundColor: clickBomb[y][x] === 1 ? 'red' : undefined,
