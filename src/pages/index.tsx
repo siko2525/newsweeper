@@ -175,7 +175,7 @@ const Home = () => {
       }
     });
 
-    if (charge === 0) {
+    if (charge === 0 && board[y][x] === 10) {
       // 周囲に爆弾がなければ隣接するセルも開く
       directions.forEach(([dy, dx]) => {
         const ny = y + dy;
@@ -240,7 +240,8 @@ const Home = () => {
           <div className={styles.bombCount}>
             {10 - board.flat().filter((cell) => cell === 10).length}
           </div>
-          <div className={styles.smile} />
+          <div className={styles.smile} style={{ backgroundPosition: isFailure ? -390 : -330 }} />
+
           <div className={styles.timer} />
         </div>
 
