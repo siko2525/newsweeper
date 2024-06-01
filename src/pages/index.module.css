@@ -10,11 +10,11 @@
 
 .frame {
   display: flex;
-  flex-wrap: wrap;
+  flex-flow: column wrap;
+  gap: 12px;
   align-items: center;
   justify-content: center;
-  width: 310px;
-  height: 420px;
+  padding: 12px;
   background-color: #ccc;
   border: 7px solid #7b7b7b;
   border-top-color: #fff;
@@ -23,12 +23,12 @@
 }
 
 .board {
+  box-sizing: content-box;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  width: 300px;
-  height: 300px;
-  margin: 6px 7px 50px;
+  width: 270px;
+  height: 270px;
   border: solid 6px #7b7b7b;
   border-right-color: #fff;
   border-bottom-color: #fff;
@@ -41,9 +41,7 @@
   background: url('icons/icons.png') no-repeat;
   background-color: #d1d1d1;
   background-position: -300px;
-  border: 2px solid #7b7b7b;
-  border-top-color: #fff;
-  border-left-color: #fff;
+  box-shadow: inset 0 0 0 1px #3c3c3c;
 }
 
 .stone {
@@ -53,8 +51,8 @@
   width: 30px;
   height: 30px;
   margin-top: auto;
-  background-color: #b3b2b2ef;
-  border: solid 2px #a89b9b;
+  background-color: #ccc;
+  border: solid 5px #646464;
   border-top-color: #fff;
   border-left-color: #fff;
 }
@@ -85,12 +83,12 @@
 }
 
 .smileArea {
+  box-sizing: content-box;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  width: 300px;
+  width: 270px;
   height: 80px;
-  margin: 7px;
   border: 6px solid #7b7b7b;
   border-right-color: #fff;
   border-bottom-color: #fff;
@@ -109,8 +107,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   background: url('icons/icons.png') no-repeat;
-  background-position: -270px;
+  background-position: -180px;
+  background-size: 280px;
 }
