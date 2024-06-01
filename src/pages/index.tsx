@@ -85,7 +85,7 @@ const Home = () => {
     } else if (newUserInput[y][x] === 0) {
       newUserInput[y][x] = 3;
       board[y][x] = 10;
-      console.log(board);
+      console.table(board);
     }
     setUserInput(newUserInput);
   };
@@ -110,7 +110,7 @@ const Home = () => {
     // const isExistBomb = board.some((row) => row.some((input) => input === 1));
     const isExistBomb = userInput.flat().some((input) => input === 1);
     //flatで二次元配列を一次元にもってきたので、someを一個にできた
-    if (isFailure) {
+    if (isFailure || board[y][x] === 10) {
       return;
     }
     rightClick(x, y, board, { preventDefault: () => {} } as React.MouseEvent<
@@ -208,6 +208,9 @@ const Home = () => {
       }
       board[y][x] = charge;
     }
+    if (newUserInput[y][x] === 3) {
+      board[y][x] = 10;
+    }
     if (newBombMap[y][x] === 1 && newUserInput[y][x] === 1) {
       board[y][x] = 11;
       clickBomb[y][x] = 1;
@@ -231,6 +234,7 @@ const Home = () => {
     }
   }
 
+  console.table(board);
   return (
     <div className={styles.container}>
       <div className={styles.frame}>
@@ -253,7 +257,11 @@ const Home = () => {
                   backgroundColor: clickBomb[y][x] === 1 ? 'red' : undefined,
                 }}
               >
-                {color === -1 && <div className={styles.stone} />}
+                {(color === -1 || color === 10) && (
+                  <div className={styles.stone}>
+                    {color === 10 && <div className={styles.flag} />}
+                  </div>
+                )}
               </div>
             )),
           )}

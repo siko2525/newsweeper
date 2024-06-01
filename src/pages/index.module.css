@@ -104,3 +104,13 @@
   margin-left: 20px;
   background-color: black;
 }
+
+.flag {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: url('icons/icons.png') no-repeat;
+  background-position: -270px;
+}
