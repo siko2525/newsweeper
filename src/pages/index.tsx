@@ -53,7 +53,7 @@ const Home = () => {
     [1, -1],
   ];
 
-  const clickBomb: number[][] = [
+  const resetButton: number[][] = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -175,13 +175,13 @@ const Home = () => {
       }
     });
 
-    if (charge === 0 && board[y][x] === 10) {
+    if (charge === 0) {
       // 周囲に爆弾がなければ隣接するセルも開く
       directions.forEach(([dy, dx]) => {
-        const ny = y + dy;
-        const nx = x + dx;
-        if (ny >= 0 && ny < newUserInput.length && nx >= 0 && nx < newUserInput[0].length) {
-          endless(nx, ny, newUserInput, newBombMap, board);
+        const Y = y + dy;
+        const X = x + dx;
+        if (Y >= 0 && Y < newUserInput.length && X >= 0 && X < newUserInput[0].length) {
+          endless(X, Y, newUserInput, newBombMap, board);
         }
       });
     }
@@ -212,7 +212,6 @@ const Home = () => {
     }
     if (newBombMap[y][x] === 1 && newUserInput[y][x] === 1) {
       board[y][x] = 11;
-      clickBomb[y][x] = 1;
       for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
           if (newBombMap[i][j] === 1) {
@@ -255,7 +254,7 @@ const Home = () => {
                 onContextMenu={(e) => rightClick(x, y, board, e)}
                 style={{
                   backgroundPosition: color * -30 + 30,
-                  backgroundColor: clickBomb[y][x] === 1 ? 'red' : undefined,
+                  backgroundColor: userInput[y][x] === 1 && bombMap[y][x] === 1 ? 'red' : undefined,
                 }}
               >
                 {(color === -1 || color === 10) && (
@@ -263,6 +262,7 @@ const Home = () => {
                     {color === 10 && <div className={styles.flag} />}
                   </div>
                 )}
+                <div>{}</div>
               </div>
             )),
           )}

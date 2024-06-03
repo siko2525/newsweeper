@@ -67,7 +67,7 @@
   margin-bottom: 10px;
   margin-left: 10px;
   font-size: 40px;
-  color: rgb(163 45 45);
+  color: rgb(214 46 46);
   content: counter(number);
   background-color: black;
 }
