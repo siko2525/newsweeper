@@ -6,7 +6,7 @@ const Home = () => {
   // 1 -> 左クリック
   // 2 -> はてな
   // 3 -> 旗
-  const [userInput, setUserInput] = useState<(0 | 1 | 2 | 3)[][]>([
+  const [userInput, setUserInput] = useState([
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -29,6 +29,8 @@ const Home = () => {
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
   ]);
+
+  const [time, setTime] = useState(0);
 
   const board: number[][] = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -53,7 +55,7 @@ const Home = () => {
     [1, -1],
   ];
 
-  const resetButton: number[][] = [
+  const initialBoard: number[][] = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -89,9 +91,12 @@ const Home = () => {
     setUserInput(newUserInput);
   };
 
-  const smileClick = () => {};
+  const smileClick = () => {
+    setTime(0);
+    setBombMap(initialBoard);
+    setUserInput(initialBoard);
+  };
 
-  const [time, setTime] = useState(0);
   useEffect(() => {
     let timer = undefined;
     if (!isFailure && isPlaying) {
@@ -251,7 +256,11 @@ const Home = () => {
           <div className={styles.bombCount}>
             {10 - board.flat().filter((cell) => cell === 10).length}
           </div>
-          <div className={styles.smile} style={{ backgroundPosition: isFailure ? -390 : -330 }} />
+          <div
+            className={styles.smile}
+            onClick={() => smileClick()}
+            style={{ backgroundPosition: isFailure ? -390 : -330 }}
+          />
 
           <div className={styles.timer}>{time}</div>
         </div>
