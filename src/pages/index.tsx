@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './index.module.css';
 
 const Home = () => {
@@ -66,7 +66,7 @@ const Home = () => {
   ];
 
   // let isEnd = 0;
-  const isPlaying = userInput.some((row) => row.some((input) => input !== 0));
+  const isPlaying = userInput.some((row) => row.some((input) => input === 1));
   const isFailure = userInput.some((row, y) =>
     row.some((input, x) => input === 1 && bombMap[y][x] === 1),
   );
@@ -92,15 +92,15 @@ const Home = () => {
   const smileClick = () => {};
 
   const [time, setTime] = useState(0);
-  const timer = () => {
-    if (isPlaying) {
-      setInterval(() => {
+  useEffect(() => {
+    let timer = undefined;
+    if (!isFailure && isPlaying) {
+      timer = setInterval(() => {
         setTime((time) => time + 1);
       }, 1000);
     }
-    setTime(time);
-    console.log(time);
-  };
+    return () => clearInterval(timer);
+  }, [isFailure, isPlaying]);
   //bombを作る
   const bombCreate = (bombMap: number[][], x: number, y: number, isExist: boolean) => {
     if (isExist) return bombMap;
@@ -124,7 +124,6 @@ const Home = () => {
     if (isFailure || board[y][x] === 10) {
       return;
     }
-    timer();
     rightClick(x, y, board, { preventDefault: () => {} } as React.MouseEvent<
       HTMLDivElement,
       MouseEvent
@@ -254,7 +253,7 @@ const Home = () => {
           </div>
           <div className={styles.smile} style={{ backgroundPosition: isFailure ? -390 : -330 }} />
 
-          <div className={styles.timer}>{}</div>
+          <div className={styles.timer}>{time}</div>
         </div>
 
         <div className={styles.board}>
