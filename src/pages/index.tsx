@@ -5,10 +5,11 @@ type levelType = 'easy' | 'normal' | 'hard' | 'custom';
 
 const Home = () => {
   const [level, setLevel] = useState<levelType>('easy');
-  const boardLength = level === 'easy' ? 9 : level === 'normal' ? 16 : level === 'hard' ? 30 : 9;
-
-  const initialBoard = Array.from({ length: boardLength }, () =>
-    Array.from({ length: boardLength }, () => 0),
+  // const boardLength = level === 'easy' ? 9 : level === 'normal' ? 16 : level === 'hard' ? 30 : 9;
+  const boardWidth = level === 'easy' ? 9 : level === 'normal' ? 16 : level === 'hard' ? 30 : 9;
+  const boardHeight = level === 'easy' ? 9 : level === 'normal' ? 16 : level === 'hard' ? 16 : 9;
+  const initialBoard = Array.from({ length: boardWidth }, () =>
+    Array.from({ length: boardHeight }, () => 0),
   );
   // 0 -> 未クリック
   // 1 -> 左クリック
@@ -20,7 +21,11 @@ const Home = () => {
 
   const [time, setTime] = useState(0);
 
-  const board: number[][] = initialBoard;
+  const board: number[][] = Array.from({ length: boardWidth }, () =>
+    Array.from({ length: boardHeight }, () => 0),
+  );
+
+  console.table(board);
 
   const directions = [
     [-1, 0],
@@ -242,7 +247,19 @@ const Home = () => {
           <div className={styles.timer}>{time}</div>
         </div>
 
-        <div className={styles.board}>
+        <div
+          className={
+            level === 'easy'
+              ? styles.easyBoard
+              : level === 'normal'
+                ? styles.normalBoard
+                : level === 'hard'
+                  ? styles.hardBoard
+                  : level === 'custom'
+                    ? styles.normalBoard
+                    : styles.normalBoard
+          }
+        >
           {board.map((row, y) =>
             row.map((color, x) => (
               <div

@@ -22,13 +22,37 @@
   box-shadow: 2px 2px 5px #000;
 }
 
-.board {
+.easyBoard {
   box-sizing: content-box;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   width: 270px;
   height: 270px;
+  border: solid 6px #7b7b7b;
+  border-right-color: #fff;
+  border-bottom-color: #fff;
+}
+
+.normalBoard {
+  box-sizing: content-box;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 480px;
+  height: 480px;
+  border: solid 6px #7b7b7b;
+  border-right-color: #fff;
+  border-bottom-color: #fff;
+}
+
+.hardBoard {
+  box-sizing: content-box;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 900px;
+  height: 480px;
   border: solid 6px #7b7b7b;
   border-right-color: #fff;
   border-bottom-color: #fff;
