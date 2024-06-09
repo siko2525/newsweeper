@@ -123,3 +123,12 @@
   background-position: -180px;
   background-size: 280px;
 }
+
+.levelSelector {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 100px;
+}

@@ -1,48 +1,26 @@
 import { useEffect, useState } from 'react';
 import styles from './index.module.css';
 
+type levelType = 'easy' | 'normal' | 'hard' | 'custom';
+
 const Home = () => {
+  const [level, setLevel] = useState<levelType>('easy');
+  const boardLength = level === 'easy' ? 9 : level === 'normal' ? 16 : level === 'hard' ? 30 : 9;
+
+  const initialBoard = Array.from({ length: boardLength }, () =>
+    Array.from({ length: boardLength }, () => 0),
+  );
   // 0 -> 未クリック
   // 1 -> 左クリック
   // 2 -> はてな
   // 3 -> 旗
-  const [userInput, setUserInput] = useState([
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  ]);
+  const [userInput, setUserInput] = useState(initialBoard);
 
-  const [bombMap, setBombMap] = useState([
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  ]);
+  const [bombMap, setBombMap] = useState(initialBoard);
 
   const [time, setTime] = useState(0);
 
-  const board: number[][] = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  ];
+  const board: number[][] = initialBoard;
 
   const directions = [
     [-1, 0],
@@ -53,18 +31,6 @@ const Home = () => {
     [-1, -1],
     [0, -1],
     [1, -1],
-  ];
-
-  const initialBoard: number[][] = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
   ];
 
   // let isEnd = 0;
@@ -121,6 +87,7 @@ const Home = () => {
     return newBombMap;
   };
 
+  // const levelSelect = ()
   //クリックしたときの挙動
   const onClick = (x: number, y: number) => {
     // const isExistBomb = board.some((row) => row.some((input) => input === 1));
@@ -249,8 +216,18 @@ const Home = () => {
     }
   }
 
+  const handleLevelClick = (selectedLevel: levelType) => {
+    setLevel(selectedLevel);
+  };
+
   return (
     <div className={styles.container}>
+      <div className={styles.levelSelector}>
+        <button onClick={() => handleLevelClick('easy')}>easy</button>
+        <button onClick={() => handleLevelClick('normal')}>normal</button>
+        <button onClick={() => handleLevelClick('hard')}>hard</button>
+        <button onClick={() => handleLevelClick('custom')}>custom</button>
+      </div>
       <div className={styles.frame}>
         <div className={styles.smileArea}>
           <div className={styles.bombCount}>
@@ -275,7 +252,8 @@ const Home = () => {
                 onContextMenu={(e) => rightClick(x, y, board, e)}
                 style={{
                   backgroundPosition: color * -30 + 30,
-                  backgroundColor: userInput[y][x] === 1 && bombMap[y][x] === 1 ? 'red' : undefined,
+                  backgroundColor:
+                    userInput[y]?.[x] === 1 && bombMap[y]?.[x] === 1 ? 'red' : undefined,
                 }}
               >
                 {(color === -1 || color === 10) && (
