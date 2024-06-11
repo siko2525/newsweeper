@@ -100,6 +100,7 @@ const Home = () => {
   }, [isFailure, isPlaying]);
   //bombを作る
   const bombCreate = (bombMap: number[][], x: number, y: number, isExist: boolean) => {
+    console.log(boardWidth, boardHeight);
     if (isExist) return bombMap;
     let bombCount = 0;
     const newBombMap = structuredClone(bombMap);
@@ -146,7 +147,7 @@ const Home = () => {
       newUserInput[y][x] = 1;
       for (let i = 0; i < boardWidth; i++) {
         for (let j = 0; j < boardHeight; j++) {
-          if (newNewBombMap[i][j] === 1) {
+          if (newNewBombMap[i]?.[j] === 1) {
             board[i][j] = 11;
           }
         }
@@ -204,8 +205,8 @@ const Home = () => {
     newBombMap: number[][],
     board: number[][],
   ) => {
-    const bombCount = 0;
-    if (userInput[y][x] === 0 && board[y][x] !== 11) {
+    if (newBombMap[y] === undefined) return;
+    if (newUserInput[y][x] === 0 && board[y][x] !== 11) {
       board[y][x] = -1;
     }
     if (newUserInput[y][x] === 1) {
@@ -222,8 +223,9 @@ const Home = () => {
     }
     if (newBombMap[y][x] === 1 && newUserInput[y][x] === 1) {
       board[y][x] = 11;
-      for (let i = 0; i < boardWidth; i++) {
-        for (let j = 0; j < boardHeight; j++) {
+      for (let i = 0; i < boardHeight; i++) {
+        if (newBombMap[i] === undefined) break;
+        for (let j = 0; j < boardWidth; j++) {
           if (newBombMap[i][j] === 1) {
             board[i][j] = 11;
           }
@@ -233,8 +235,8 @@ const Home = () => {
       return;
     }
   };
-  for (let x = 0; x < boardWidth; x++) {
-    for (let y = 0; y < boardHeight; y++) {
+  for (let y = 0; y < boardHeight; y++) {
+    for (let x = 0; x < boardWidth; x++) {
       fusion(x, y, userInput, bombMap, board);
     }
   }
