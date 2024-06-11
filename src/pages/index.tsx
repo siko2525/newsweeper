@@ -20,6 +20,19 @@ const Home = () => {
   const initialBoard = Array.from({ length: boardWidth }, () =>
     Array.from({ length: boardHeight }, () => 0),
   );
+
+  const changeBoard = (width: number, height: number) => {
+    const array2D: number[][] = [];
+    for (let i = 0; i < height; i++) {
+      const array = [];
+      for (let l = 0; l < width; l++) {
+        array.push(0);
+      }
+      array2D.push(array);
+    }
+    return array2D;
+  };
+
   // 0 -> 未クリック
   // 1 -> 左クリック
   // 2 -> はてな
@@ -30,13 +43,10 @@ const Home = () => {
 
   const [time, setTime] = useState(0);
 
-  const board: number[][] = Array.from({ length: boardWidth }, () =>
-    Array.from({ length: boardHeight }, () => 0),
-  );
-
-  console.log(board);
-
-  console.table(board);
+  // const board: number[][] = Array.from({ length: boardWidth }, () =>
+  //   Array.from({ length: boardHeight }, () => 0),
+  // );
+  const board: number[][] = changeBoard(boardWidth, boardHeight);
 
   const directions = [
     [-1, 0],
@@ -75,8 +85,8 @@ const Home = () => {
 
   const smileClick = () => {
     setTime(0);
-    setBombMap(initialBoard);
-    setUserInput(initialBoard);
+    setBombMap(changeBoard(boardWidth, boardHeight));
+    setUserInput(changeBoard(boardWidth, boardHeight));
   };
 
   useEffect(() => {
@@ -94,12 +104,11 @@ const Home = () => {
     let bombCount = 0;
     const newBombMap = structuredClone(bombMap);
     while (bombCount < bomb) {
-      const bombX = Math.floor(Math.random() * 9);
-      const bombY = Math.floor(Math.random() * 9);
+      const bombX = Math.floor(Math.random() * boardWidth);
+      const bombY = Math.floor(Math.random() * boardHeight);
       if (newBombMap[bombY][bombX] === 1 || (bombX === x && bombY === y)) continue;
       newBombMap[bombY][bombX] = 1;
       bombCount++;
-      console.log(bombCount);
     }
     return newBombMap;
   };
@@ -148,7 +157,6 @@ const Home = () => {
       newUserInput[y][x] = 1;
     }
     setUserInput(newUserInput);
-    console.log(boardWidth, boardHeight);
     for (let i = 0; i < boardWidth; i++) {
       for (let j = 0; j < boardHeight; j++) {
         fusion(j, i, newUserInput, newNewBombMap, board);
@@ -218,7 +226,6 @@ const Home = () => {
         for (let j = 0; j < boardHeight; j++) {
           if (newBombMap[i][j] === 1) {
             board[i][j] = 11;
-            console.log(bombCount);
           }
         }
       }
@@ -226,23 +233,53 @@ const Home = () => {
       return;
     }
   };
-
   for (let x = 0; x < boardWidth; x++) {
     for (let y = 0; y < boardHeight; y++) {
       fusion(x, y, userInput, bombMap, board);
     }
   }
-  console.log(boardWidth, boardHeight, bombMap.length);
+
   const handleLevelClick = (selectedLevel: levelType) => {
     setLevel(selectedLevel);
-    const x = 0;
-    const y = 0;
-    const isExist = false;
-    const newBombMap = bombCreate(bombMap, x, y, isExist);
-    setBombMap(newBombMap);
-  };
+    setUserInput(
+      changeBoard(
+        selectedLevel === 'easy'
+          ? 9
+          : selectedLevel === 'normal'
+            ? 16
+            : selectedLevel === 'hard'
+              ? 30
+              : 9,
+        selectedLevel === 'easy'
+          ? 9
+          : selectedLevel === 'normal'
+            ? 16
+            : selectedLevel === 'hard'
+              ? 16
+              : 9,
+      ),
+    );
+    setBombMap(
+      changeBoard(
+        selectedLevel === 'easy'
+          ? 9
+          : selectedLevel === 'normal'
+            ? 16
+            : selectedLevel === 'hard'
+              ? 30
+              : 9,
+        selectedLevel === 'easy'
+          ? 9
+          : selectedLevel === 'normal'
+            ? 16
+            : selectedLevel === 'hard'
+              ? 16
+              : 9,
+      ),
+    );
 
-  console.log(bomb);
+    setTime(0);
+  };
 
   return (
     <div className={styles.container}>
