@@ -5,6 +5,9 @@ type levelType = 'easy' | 'normal' | 'hard' | 'custom';
 
 const Home = () => {
   const [level, setLevel] = useState<levelType>('easy');
+  const [customWidth, setCustomWidth] = useState(9);
+  const [customHeight, setCustomHeight] = useState(9);
+  const [customBomb, setCustomBomb] = useState(10);
   const boardWidth = level === 'easy' ? 9 : level === 'normal' ? 16 : level === 'hard' ? 30 : 9;
   const boardHeight = level === 'easy' ? 9 : level === 'normal' ? 16 : level === 'hard' ? 16 : 9;
   const bomb =
@@ -279,7 +282,6 @@ const Home = () => {
               : 9,
       ),
     );
-
     setTime(0);
   };
 
@@ -291,6 +293,35 @@ const Home = () => {
         <button onClick={() => handleLevelClick('hard')}>hard</button>
         <button onClick={() => handleLevelClick('custom')}>custom</button>
       </div>
+      {level === 'custom' && (
+        <div className={styles.customBoard}>
+          <label>
+            Width:
+            <input
+              type="number"
+              value={customWidth}
+              onChange={(e) => setCustomWidth(Number(e.target.value))}
+            />
+          </label>
+          <label>
+            Height:
+            <input
+              type="number"
+              value={customHeight}
+              onChange={(e) => setCustomHeight(Number(e.target.value))}
+            />
+          </label>
+          <label>
+            Bomb:
+            <input
+              type="number"
+              value={customBomb}
+              onChange={(e) => setCustomBomb(Number(e.target.value))}
+            />
+          </label>
+        </div>
+      )}
+
       <div className={styles.frame}>
         <div className={styles.smileArea}>
           <div className={styles.bombCount}>

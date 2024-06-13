@@ -58,6 +58,9 @@
   border-bottom-color: #fff;
 }
 
+.customBoard {
+}
+
 .bomb {
   box-sizing: border-box;
   width: 30px;
