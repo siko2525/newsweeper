@@ -53,12 +53,16 @@
   align-items: center;
   width: 900px;
   height: 480px;
-  border: solid 6px #7b7b7b;
   border-right-color: #fff;
   border-bottom-color: #fff;
 }
 
 .customBoard {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
 }
 
 .bomb {
@@ -151,11 +155,22 @@
   background-size: 280px;
 }
 
+.question {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  background: url('icons/icons.png') no-repeat;
+  background-position: -160px;
+  background-size: 280px;
+}
+
 .levelSelector {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: 100px;
+  width: 200px;
   height: 100px;
 }

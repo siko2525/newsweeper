@@ -18,7 +18,7 @@ const Home = () => {
         : level === 'hard'
           ? 99
           : level === 'custom'
-            ? 100
+            ? 10
             : 10;
   const initialBoard = Array.from({ length: boardWidth }, () =>
     Array.from({ length: boardHeight }, () => 0),
@@ -78,7 +78,9 @@ const Home = () => {
     const newUserInput = structuredClone(userInput);
     if (isFailure) return;
     if (newUserInput[y][x] === 3) {
-      newUserInput[y][x] = 0;
+      newUserInput[y][x] = 4;
+    } else if (newUserInput[y][x] === 4) {
+      newUserInput[y][x] === 0;
     } else if (newUserInput[y][x] === 0) {
       newUserInput[y][x] = 3;
       board[y][x] = 10;
@@ -285,6 +287,8 @@ const Home = () => {
     setTime(0);
   };
 
+  console.log(setCustomHeight);
+
   return (
     <div className={styles.container}>
       <div className={styles.levelSelector}>
@@ -362,11 +366,16 @@ const Home = () => {
                     userInput[y]?.[x] === 1 && bombMap[y]?.[x] === 1 ? 'red' : undefined,
                 }}
               >
-                {(color === -1 || color === 10) && (
+                {(color === -1 ||
+                  color === 10 ||
+                  userInput[y][x] === 3 ||
+                  userInput[y][x] === 4) && (
                   <div className={styles.stone}>
                     {color === 10 && <div className={styles.flag} />}
+                    {userInput[y][x] === 4 && <div className={styles.question} />}
                   </div>
                 )}
+
                 <div>{}</div>
               </div>
             )),
