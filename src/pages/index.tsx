@@ -78,13 +78,19 @@ const Home = () => {
     const newUserInput = structuredClone(userInput);
     if (isFailure) return;
     if (newUserInput[y][x] === 3) {
-      newUserInput[y][x] = 4;
-    } else if (newUserInput[y][x] === 4) {
-      newUserInput[y][x] === 0;
+      newUserInput[y][x] = 2;
+      board[y][x] = 4;
+    } else if (newUserInput[y][x] === 2) {
+      newUserInput[y][x] = 0;
+      board[y][x] = -1;
     } else if (newUserInput[y][x] === 0) {
       newUserInput[y][x] = 3;
       board[y][x] = 10;
     }
+    setUserInput(newUserInput);
+
+    console.log(board[y][x]);
+    console.table(newUserInput);
     setUserInput(newUserInput);
   };
 
@@ -366,13 +372,10 @@ const Home = () => {
                     userInput[y]?.[x] === 1 && bombMap[y]?.[x] === 1 ? 'red' : undefined,
                 }}
               >
-                {(color === -1 ||
-                  color === 10 ||
-                  userInput[y][x] === 3 ||
-                  userInput[y][x] === 4) && (
+                {(color === -1 || color === 10 || userInput[y][x] === 2) && (
                   <div className={styles.stone}>
                     {color === 10 && <div className={styles.flag} />}
-                    {userInput[y][x] === 4 && <div className={styles.question} />}
+                    {userInput[y][x] === 2 && <div className={styles.question} />}
                   </div>
                 )}
 
