@@ -63,7 +63,9 @@ const Home = () => {
   ];
 
   // let isEnd = 0;
-  const isPlaying = userInput.some((row) => row.some((input) => input === 1));
+  const isPlaying = userInput.some((row) =>
+    row.some((input) => input === 1 || input === 3 || input === 2),
+  );
   const isFailure = userInput.some((row, y) =>
     row.some((input, x) => input === 1 && bombMap[y][x] === 1),
   );
