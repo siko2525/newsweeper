@@ -7,9 +7,29 @@ const Home = () => {
   const [level, setLevel] = useState<levelType>('easy');
   const [customWidth, setCustomWidth] = useState(9);
   const [customHeight, setCustomHeight] = useState(9);
+  const [neoCustomWidth, setNeoCustomWidth] = useState(9);
+  const [neoCustomHeight, setNeoCustomHeight] = useState(9);
   const [customBomb, setCustomBomb] = useState(10);
-  const boardWidth = level === 'easy' ? 9 : level === 'normal' ? 16 : level === 'hard' ? 30 : 9;
-  const boardHeight = level === 'easy' ? 9 : level === 'normal' ? 16 : level === 'hard' ? 16 : 9;
+  const boardWidth =
+    level === 'easy'
+      ? 9
+      : level === 'normal'
+        ? 16
+        : level === 'hard'
+          ? 30
+          : level === 'custom'
+            ? customWidth
+            : 9;
+  const boardHeight =
+    level === 'easy'
+      ? 9
+      : level === 'normal'
+        ? 16
+        : level === 'hard'
+          ? 16
+          : level === 'custom'
+            ? customHeight
+            : 9;
   const bomb =
     level === 'easy'
       ? 10
@@ -18,7 +38,7 @@ const Home = () => {
         : level === 'hard'
           ? 99
           : level === 'custom'
-            ? 10
+            ? customBomb
             : 10;
   const initialBoard = Array.from({ length: boardWidth }, () =>
     Array.from({ length: boardHeight }, () => 0),
@@ -264,14 +284,18 @@ const Home = () => {
             ? 16
             : selectedLevel === 'hard'
               ? 30
-              : 9,
+              : selectedLevel === 'custom'
+                ? customWidth
+                : customHeight,
         selectedLevel === 'easy'
           ? 9
           : selectedLevel === 'normal'
             ? 16
             : selectedLevel === 'hard'
               ? 16
-              : 9,
+              : selectedLevel === 'custom'
+                ? customHeight
+                : customHeight,
       ),
     );
     setBombMap(
@@ -282,16 +306,28 @@ const Home = () => {
             ? 16
             : selectedLevel === 'hard'
               ? 30
-              : 9,
+              : selectedLevel === 'custom'
+                ? customWidth
+                : customHeight,
         selectedLevel === 'easy'
           ? 9
           : selectedLevel === 'normal'
             ? 16
             : selectedLevel === 'hard'
               ? 16
-              : 9,
+              : selectedLevel === 'custom'
+                ? customHeight
+                : customHeight,
       ),
     );
+    setTime(0);
+  };
+
+  const custom = () => {
+    setUserInput(changeBoard(neoCustomWidth, neoCustomHeight));
+    setBombMap(changeBoard(neoCustomWidth, neoCustomHeight));
+    setCustomWidth(neoCustomWidth);
+    setCustomHeight(neoCustomHeight);
     setTime(0);
   };
 
@@ -311,16 +347,16 @@ const Home = () => {
             Width:
             <input
               type="number"
-              value={customWidth}
-              onChange={(e) => setCustomWidth(Number(e.target.value))}
+              value={neoCustomWidth}
+              onChange={(e) => setNeoCustomWidth(Number(e.target.value))}
             />
           </label>
           <label>
             Height:
             <input
               type="number"
-              value={customHeight}
-              onChange={(e) => setCustomHeight(Number(e.target.value))}
+              value={neoCustomHeight}
+              onChange={(e) => setNeoCustomHeight(Number(e.target.value))}
             />
           </label>
           <label>
@@ -331,6 +367,7 @@ const Home = () => {
               onChange={(e) => setCustomBomb(Number(e.target.value))}
             />
           </label>
+          <button onClick={() => custom()}>confirm</button>
         </div>
       )}
 
@@ -357,9 +394,10 @@ const Home = () => {
                 : level === 'hard'
                   ? styles.hardBoard
                   : level === 'custom'
-                    ? styles.normalBoard
-                    : styles.normalBoard
+                    ? styles.easyBoard
+                    : styles.easyBoard
           }
+          style={{ width: bombMap[0].length * 30, height: bombMap.length * 30 }}
         >
           {board.map((row, y) =>
             row.map((color, x) => (
@@ -380,8 +418,6 @@ const Home = () => {
                     {userInput[y][x] === 2 && <div className={styles.question} />}
                   </div>
                 )}
-
-                <div>{}</div>
               </div>
             )),
           )}
