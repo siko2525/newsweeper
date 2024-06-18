@@ -135,6 +135,10 @@ const Home = () => {
   const bombCreate = (bombMap: number[][], x: number, y: number, isExist: boolean) => {
     console.log(boardWidth, boardHeight);
     if (isExist) return bombMap;
+    if (bomb >= boardWidth * boardHeight) {
+      const limitBombMap = Array.from({ length: boardHeight }, () => Array(boardWidth).fill(1));
+      return limitBombMap;
+    }
     let bombCount = 0;
     const newBombMap = structuredClone(bombMap);
     while (bombCount < bomb) {
@@ -153,8 +157,8 @@ const Home = () => {
     // const isExistBomb = board.some((row) => row.some((input) => input === 1));
     const isExistBomb = userInput.flat().some((input) => input === 1);
     //flatで二次元配列を一次元にもってきたので、someを一個にできた
-    if (isFailure || board[y][x] === 10) {
-      return;
+    if (board[y][x] === 10) {
+      return isFailure;
     }
     rightClick(x, y, board, { preventDefault: () => {} } as React.MouseEvent<
       HTMLDivElement,
@@ -324,11 +328,17 @@ const Home = () => {
   };
 
   const custom = () => {
+    if (neoCustomHeight * neoCustomWidth < customBomb) {
+      const neoBombCount = neoCustomHeight * neoCustomWidth;
+      setCustomBomb(neoBombCount);
+    }
     setUserInput(changeBoard(neoCustomWidth, neoCustomHeight));
     setBombMap(changeBoard(neoCustomWidth, neoCustomHeight));
     setCustomWidth(neoCustomWidth);
     setCustomHeight(neoCustomHeight);
+
     setTime(0);
+    console.table(board);
   };
 
   console.log(setCustomHeight);
