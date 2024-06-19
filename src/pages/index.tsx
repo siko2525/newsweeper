@@ -357,24 +357,51 @@ const Home = () => {
             Width:
             <input
               type="number"
+              min={0}
+              max={300}
+              step="1"
               value={neoCustomWidth}
               onChange={(e) => setNeoCustomWidth(Number(e.target.value))}
+              onInput={(e) => {
+                const value = Number((e.target as HTMLInputElement).value);
+                if (!Number.isInteger(value)) {
+                  (e.target as HTMLInputElement).value = Math.floor(value).toString();
+                }
+              }}
             />
           </label>
           <label>
             Height:
             <input
               type="number"
+              min={0}
+              max={300}
+              step="1"
               value={neoCustomHeight}
               onChange={(e) => setNeoCustomHeight(Number(e.target.value))}
+              onInput={(e) => {
+                const value = Number((e.target as HTMLInputElement).value);
+                if (!Number.isInteger(value)) {
+                  (e.target as HTMLInputElement).value = Math.floor(value).toString();
+                }
+              }}
             />
           </label>
           <label>
             Bomb:
             <input
               type="number"
+              min={0}
+              max={90000}
+              step="1"
               value={customBomb}
               onChange={(e) => setCustomBomb(Number(e.target.value))}
+              onInput={(e) => {
+                const value = Number((e.target as HTMLInputElement).value);
+                if (!Number.isInteger(value)) {
+                  (e.target as HTMLInputElement).value = Math.floor(value).toString();
+                }
+              }}
             />
           </label>
           <button onClick={() => custom()}>confirm</button>
