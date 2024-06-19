@@ -160,6 +160,9 @@ const Home = () => {
     if (board[y][x] === 10) {
       return isFailure;
     }
+    if (isFailure) {
+      return;
+    }
     rightClick(x, y, board, { preventDefault: () => {} } as React.MouseEvent<
       HTMLDivElement,
       MouseEvent
@@ -421,44 +424,49 @@ const Home = () => {
 
           <div className={styles.timer}>{time}</div>
         </div>
-
-        <div
-          className={
-            level === 'easy'
-              ? styles.easyBoard
-              : level === 'normal'
-                ? styles.normalBoard
-                : level === 'hard'
-                  ? styles.hardBoard
-                  : level === 'custom'
-                    ? styles.easyBoard
-                    : styles.easyBoard
-          }
-          style={{ width: bombMap[0].length * 30, height: bombMap.length * 30 }}
-        >
-          {board.map((row, y) =>
-            row.map((color, x) => (
-              <div
-                className={styles.bomb}
-                key={`${x}-${y}`}
-                onClick={() => onClick(x, y)}
-                onContextMenu={(e) => rightClick(x, y, board, e)}
-                style={{
-                  backgroundPosition: color * -30 + 30,
-                  backgroundColor:
-                    userInput[y]?.[x] === 1 && bombMap[y]?.[x] === 1 ? 'red' : undefined,
-                }}
-              >
-                {(color === -1 || color === 10 || userInput[y][x] === 2) && (
-                  <div className={styles.stone}>
-                    {color === 10 && <div className={styles.flag} />}
-                    {userInput[y][x] === 2 && <div className={styles.question} />}
-                  </div>
-                )}
-              </div>
-            )),
-          )}
-        </div>
+        {bombMap.length > 0 && bombMap[0].length > 0 && (
+          <div
+            className={
+              level === 'easy'
+                ? styles.easyBoard
+                : level === 'normal'
+                  ? styles.normalBoard
+                  : level === 'hard'
+                    ? styles.hardBoard
+                    : level === 'custom'
+                      ? styles.easyBoard
+                      : styles.easyBoard
+            }
+            style={{
+              width: bombMap[0]?.length * 30,
+              height: bombMap.length * 30,
+              // display: bombMap.length === 0 || bombMap[0].length === 0 ? 'none' : 'block',
+            }}
+          >
+            {board.map((row, y) =>
+              row.map((color, x) => (
+                <div
+                  className={styles.bomb}
+                  key={`${x}-${y}`}
+                  onClick={() => onClick(x, y)}
+                  onContextMenu={(e) => rightClick(x, y, board, e)}
+                  style={{
+                    backgroundPosition: color * -30 + 30,
+                    backgroundColor:
+                      userInput[y]?.[x] === 1 && bombMap[y]?.[x] === 1 ? 'red' : undefined,
+                  }}
+                >
+                  {(color === -1 || color === 10 || userInput[y][x] === 2) && (
+                    <div className={styles.stone}>
+                      {color === 10 && <div className={styles.flag} />}
+                      {userInput[y][x] === 2 && <div className={styles.question} />}
+                    </div>
+                  )}
+                </div>
+              )),
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
