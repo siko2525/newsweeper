@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styles from './index.module.css';
 
 type levelType = 'easy' | 'normal' | 'hard' | 'custom';
@@ -10,6 +10,7 @@ const Home = () => {
   const [neoCustomWidth, setNeoCustomWidth] = useState(9);
   const [neoCustomHeight, setNeoCustomHeight] = useState(9);
   const [customBomb, setCustomBomb] = useState(10);
+  const [isGameClear, setIsGameClear] = useState(false);
   const boardWidth =
     level === 'easy'
       ? 9
@@ -90,6 +91,21 @@ const Home = () => {
     row.some((input, x) => input === 1 && bombMap[y][x] === 1),
   );
 
+  const gameClear = useCallback(() => {
+    if (isFailure || isGameClear) return;
+    let count = 0;
+    for (let i = 0; i < boardWidth; i++) {
+      for (let l = 0; l < boardHeight; l++) {
+        if (userInput[i][l] === 0) {
+          count += 1;
+        }
+      }
+      if (count === bomb) setIsGameClear(true);
+    }
+    console.log(isGameClear);
+  }, [isFailure, isGameClear, boardWidth, boardHeight, userInput, bomb]);
+
+  console.table(userInput);
   const rightClick = (
     x: number,
     y: number,
@@ -110,17 +126,18 @@ const Home = () => {
       board[y][x] = 10;
     }
     setUserInput(newUserInput);
-
-    console.log(board[y][x]);
-    console.table(newUserInput);
-    setUserInput(newUserInput);
   };
 
   const smileClick = () => {
     setTime(0);
     setBombMap(changeBoard(boardWidth, boardHeight));
     setUserInput(changeBoard(boardWidth, boardHeight));
+    setIsGameClear(false);
   };
+
+  useEffect(() => {
+    gameClear();
+  }, [userInput, gameClear]);
 
   useEffect(() => {
     let timer = undefined;
@@ -133,7 +150,6 @@ const Home = () => {
   }, [isFailure, isPlaying]);
   //bombを作る
   const bombCreate = (bombMap: number[][], x: number, y: number, isExist: boolean) => {
-    console.log(boardWidth, boardHeight);
     if (isExist) return bombMap;
     if (bomb >= boardWidth * boardHeight) {
       const limitBombMap = Array.from({ length: boardHeight }, () => Array(boardWidth).fill(1));
@@ -203,6 +219,7 @@ const Home = () => {
         fusion(j, i, newUserInput, newNewBombMap, board);
       }
     }
+    gameClear();
   };
 
   const endless = (
@@ -328,6 +345,7 @@ const Home = () => {
       ),
     );
     setTime(0);
+    setIsGameClear(false);
   };
 
   const custom = () => {
@@ -419,7 +437,7 @@ const Home = () => {
           <div
             className={styles.smile}
             onClick={() => smileClick()}
-            style={{ backgroundPosition: isFailure ? -390 : -330 }}
+            style={{ backgroundPosition: isFailure ? -390 : isGameClear ? -360 : -330 }}
           />
 
           <div className={styles.timer}>{time}</div>
