@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './index.module.css';
 
 type levelType = 'easy' | 'normal' | 'hard' | 'custom';
@@ -9,6 +9,7 @@ const Home = () => {
   const [customHeight, setCustomHeight] = useState(9);
   const [neoCustomWidth, setNeoCustomWidth] = useState(9);
   const [neoCustomHeight, setNeoCustomHeight] = useState(9);
+  const [neoCustomBomb, setNeoCustomBomb] = useState(10);
   const [customBomb, setCustomBomb] = useState(10);
   const [isGameClear, setIsGameClear] = useState(false);
   const boardWidth =
@@ -90,20 +91,24 @@ const Home = () => {
   const isFailure = userInput.some((row, y) =>
     row.some((input, x) => input === 1 && bombMap[y][x] === 1),
   );
+  // const isTimer =
 
-  const gameClear = useCallback(() => {
+  const gameClear = () => {
     if (isFailure || isGameClear) return;
     let count = 0;
     for (let i = 0; i < boardWidth; i++) {
       for (let l = 0; l < boardHeight; l++) {
-        if (userInput[i][l] === 0) {
+        if (userInput[i]?.[l] === 0) {
           count += 1;
         }
       }
-      if (count === bomb) setIsGameClear(true);
     }
+    if (count === bomb) {
+      setIsGameClear(true);
+    }
+
     console.log(isGameClear);
-  }, [isFailure, isGameClear, boardWidth, boardHeight, userInput, bomb]);
+  };
 
   console.table(userInput);
   const rightClick = (
@@ -135,11 +140,12 @@ const Home = () => {
     setIsGameClear(false);
   };
 
-  useEffect(() => {
-    gameClear();
-  }, [userInput, gameClear]);
+  // useEffect(() => {
+  //   gameClear();
+  // }, [userInput, gameClear]);
 
   useEffect(() => {
+    if (isFailure) return;
     let timer = undefined;
     if (!isFailure && isPlaying) {
       timer = setInterval(() => {
@@ -346,12 +352,16 @@ const Home = () => {
     );
     setTime(0);
     setIsGameClear(false);
+    setCustomBomb(neoCustomBomb);
   };
 
   const custom = () => {
-    if (neoCustomHeight * neoCustomWidth < customBomb) {
-      const neoBombCount = neoCustomHeight * neoCustomWidth;
+    if (neoCustomHeight * neoCustomWidth <= neoCustomBomb) {
+      const neoBombCount = neoCustomHeight * neoCustomWidth - 2;
+      setNeoCustomBomb(neoBombCount);
       setCustomBomb(neoBombCount);
+    } else {
+      setCustomBomb(neoCustomBomb);
     }
     setUserInput(changeBoard(neoCustomWidth, neoCustomHeight));
     setBombMap(changeBoard(neoCustomWidth, neoCustomHeight));
@@ -362,7 +372,7 @@ const Home = () => {
     console.table(board);
   };
 
-  console.log(setCustomHeight);
+  console.log(neoCustomBomb);
 
   return (
     <div className={styles.container}>
@@ -413,10 +423,10 @@ const Home = () => {
             <input
               type="number"
               min={0}
-              max={90000}
+              max={neoCustomHeight * neoCustomWidth - 2}
               step="1"
-              value={customBomb}
-              onChange={(e) => setCustomBomb(Number(e.target.value))}
+              value={neoCustomBomb}
+              onChange={(e) => setNeoCustomBomb(Number(e.target.value))}
               onInput={(e) => {
                 const value = Number((e.target as HTMLInputElement).value);
                 if (!Number.isInteger(value)) {
@@ -432,7 +442,7 @@ const Home = () => {
       <div className={styles.frame}>
         <div className={styles.smileArea}>
           <div className={styles.bombCount}>
-            {bomb - board.flat().filter((cell) => cell === 10).length}
+            {customBomb - board.flat().filter((cell) => cell === 10).length}
           </div>
           <div
             className={styles.smile}
