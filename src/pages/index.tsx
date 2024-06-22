@@ -106,6 +106,13 @@ const Home = () => {
     }
     console.log(count, bomb);
     if (count === bomb) {
+      for (let i = 0; i < boardHeight; i++) {
+        for (let l = 0; l < boardWidth; l++) {
+          if (newUserInput[i][l] === 0 || newUserInput[i][l] === 2) {
+            newUserInput[i][l] = 3;
+          }
+        }
+      }
       setIsGameClear(true);
     }
   };
