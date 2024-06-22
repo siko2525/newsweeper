@@ -93,10 +93,10 @@ const Home = () => {
   );
   // const isTimer =
 
-  const gameClear = (newUserInput: number[][]) => {
-    console.table(newUserInput);
-    console.table(bombMap);
+  const gameClear = (newUserInput: number[][], newBombMap: number[][]) => {
     if (isFailure || isGameClear) return;
+    console.table(newUserInput);
+    console.table(newBombMap);
     let count = 0;
     for (let i = 0; i < boardHeight; i++) {
       for (let l = 0; l < boardWidth; l++) {
@@ -109,14 +109,20 @@ const Home = () => {
     if (count === bomb) {
       for (let i = 0; i < boardHeight; i++) {
         for (let l = 0; l < boardWidth; l++) {
-          if ((newUserInput[i][l] === 0 || newUserInput[i][l] === 2) && bombMap[i][l] === 1) {
+          if ((newUserInput[i][l] === 0 || newUserInput[i][l] === 2) && newBombMap[i][l] === 1) {
             newUserInput[i][l] = 3;
+            console.log('wan');
           }
         }
       }
       setIsGameClear(true);
     }
     setUserInput(newUserInput);
+    for (let i = 0; i < boardWidth; i++) {
+      for (let j = 0; j < boardHeight; j++) {
+        fusion(j, i, newUserInput, newBombMap, board);
+      }
+    }
   };
 
   const rightClick = (
@@ -201,11 +207,13 @@ const Home = () => {
     // } else {
     //   const newNewBombMap = newBombMap;
     // }
-    gameClear(newUserInput);
-    if (isFailure) {
+    setBombMap(newNewBombMap);
+    console.table(newNewBombMap);
+    gameClear(newUserInput, newNewBombMap);
+    if (isFailure || isGameClear) {
       return;
     }
-    setBombMap(newNewBombMap);
+
     let charge = 0;
     for (const dir of directions) {
       if (newNewBombMap[y + dir[0]] !== undefined && newNewBombMap[y + dir[0]][x + dir[1]] === 1) {
@@ -232,7 +240,7 @@ const Home = () => {
         fusion(j, i, newUserInput, newNewBombMap, board);
       }
     }
-    gameClear(newUserInput);
+    gameClear(newUserInput, newNewBombMap);
   };
 
   const endless = (
