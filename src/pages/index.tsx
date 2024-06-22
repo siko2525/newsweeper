@@ -108,7 +108,7 @@ const Home = () => {
     if (count === bomb) {
       for (let i = 0; i < boardHeight; i++) {
         for (let l = 0; l < boardWidth; l++) {
-          if (newUserInput[i][l] === 0 || newUserInput[i][l] === 2) {
+          if ((newUserInput[i][l] === 0 || newUserInput[i][l] === 2) && bombMap[i][l] === 10) {
             newUserInput[i][l] = 3;
           }
         }
@@ -369,7 +369,7 @@ const Home = () => {
     setBombMap(changeBoard(neoCustomWidth, neoCustomHeight));
     setCustomWidth(neoCustomWidth);
     setCustomHeight(neoCustomHeight);
-
+    setIsGameClear(false);
     setTime(0);
   };
 
