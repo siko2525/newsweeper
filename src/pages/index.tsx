@@ -95,6 +95,7 @@ const Home = () => {
 
   const gameClear = (newUserInput: number[][]) => {
     console.table(newUserInput);
+    console.table(bombMap);
     if (isFailure || isGameClear) return;
     let count = 0;
     for (let i = 0; i < boardHeight; i++) {
@@ -108,7 +109,7 @@ const Home = () => {
     if (count === bomb) {
       for (let i = 0; i < boardHeight; i++) {
         for (let l = 0; l < boardWidth; l++) {
-          if ((newUserInput[i][l] === 0 || newUserInput[i][l] === 2) && bombMap[i][l] === 10) {
+          if ((newUserInput[i][l] === 0 || newUserInput[i][l] === 2) && bombMap[i][l] === 1) {
             newUserInput[i][l] = 3;
           }
         }
@@ -186,9 +187,7 @@ const Home = () => {
     if (board[y][x] === 10) {
       return isFailure;
     }
-    if (isFailure) {
-      return;
-    }
+
     rightClick(x, y, board, { preventDefault: () => {} } as React.MouseEvent<
       HTMLDivElement,
       MouseEvent
@@ -202,6 +201,10 @@ const Home = () => {
     // } else {
     //   const newNewBombMap = newBombMap;
     // }
+    gameClear(newUserInput);
+    if (isFailure) {
+      return;
+    }
     setBombMap(newNewBombMap);
     let charge = 0;
     for (const dir of directions) {
