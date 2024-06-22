@@ -93,16 +93,18 @@ const Home = () => {
   );
   // const isTimer =
 
-  const gameClear = () => {
+  const gameClear = (newUserInput: number[][]) => {
+    console.table(newUserInput);
     if (isFailure || isGameClear) return;
     let count = 0;
-    for (let i = 0; i < boardWidth; i++) {
-      for (let l = 0; l < boardHeight; l++) {
-        if (userInput[i]?.[l] === 0) {
+    for (let i = 0; i < boardHeight; i++) {
+      for (let l = 0; l < boardWidth; l++) {
+        if (newUserInput[i][l] === 0 || newUserInput[i][l] === 3) {
           count += 1;
         }
       }
     }
+    console.log(count, bomb);
     if (count === bomb) {
       setIsGameClear(true);
     }
@@ -218,7 +220,7 @@ const Home = () => {
         fusion(j, i, newUserInput, newNewBombMap, board);
       }
     }
-    gameClear();
+    gameClear(newUserInput);
   };
 
   const endless = (
