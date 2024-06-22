@@ -123,6 +123,7 @@ const Home = () => {
     board: number[][],
     event: React.MouseEvent<HTMLDivElement, MouseEvent>,
   ) => {
+    if (isGameClear) return;
     event.preventDefault();
     const newUserInput = structuredClone(userInput);
     if (isFailure) return;
