@@ -106,11 +106,8 @@ const Home = () => {
     if (count === bomb) {
       setIsGameClear(true);
     }
-
-    console.log(isGameClear);
   };
 
-  console.table(userInput);
   const rightClick = (
     x: number,
     y: number,
@@ -140,12 +137,8 @@ const Home = () => {
     setIsGameClear(false);
   };
 
-  // useEffect(() => {
-  //   gameClear();
-  // }, [userInput, gameClear]);
-
   useEffect(() => {
-    if (isFailure) return;
+    if (isFailure || isGameClear) return;
     let timer = undefined;
     if (!isFailure && isPlaying) {
       timer = setInterval(() => {
@@ -153,7 +146,7 @@ const Home = () => {
       }, 1000);
     }
     return () => clearInterval(timer);
-  }, [isFailure, isPlaying]);
+  }, [isFailure, isPlaying, isGameClear]);
   //bombを作る
   const bombCreate = (bombMap: number[][], x: number, y: number, isExist: boolean) => {
     if (isExist) return bombMap;
@@ -369,10 +362,7 @@ const Home = () => {
     setCustomHeight(neoCustomHeight);
 
     setTime(0);
-    console.table(board);
   };
-
-  console.log(neoCustomBomb);
 
   return (
     <div className={styles.container}>
@@ -442,7 +432,7 @@ const Home = () => {
       <div className={styles.frame}>
         <div className={styles.smileArea}>
           <div className={styles.bombCount}>
-            {customBomb - board.flat().filter((cell) => cell === 10).length}
+            {bomb - board.flat().filter((cell) => cell === 10).length}
           </div>
           <div
             className={styles.smile}
