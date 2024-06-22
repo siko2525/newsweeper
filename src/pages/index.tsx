@@ -115,6 +115,7 @@ const Home = () => {
       }
       setIsGameClear(true);
     }
+    setUserInput(newUserInput);
   };
 
   const rightClick = (
