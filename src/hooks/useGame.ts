@@ -293,7 +293,7 @@ const useGame = () => {
 
   const custom = () => {
     if (neoCustomHeight * neoCustomWidth <= neoCustomBomb) {
-      const neoBombCount = neoCustomHeight * neoCustomWidth - 2;
+      const neoBombCount = neoCustomHeight * neoCustomWidth;
       setNeoCustomBomb(neoBombCount);
       setCustomBomb(neoBombCount);
     } else {
