@@ -73,7 +73,7 @@ const Home = () => {
             <input
               type="number"
               min={0}
-              max={neoCustomHeight * neoCustomWidth - 2}
+              max={neoCustomHeight * neoCustomWidth}
               step="1"
               value={neoCustomBomb}
               onChange={(e) => setNeoCustomBomb(Number(e.target.value))}

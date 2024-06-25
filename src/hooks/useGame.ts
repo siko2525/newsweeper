@@ -165,6 +165,12 @@ const useGame = () => {
       newUserInput[y][x] = 1;
     }
     setUserInput(newUserInput);
+    for (let i = 0; i < boardWidth; i++) {
+      for (let j = 0; j < boardHeight; j++) {
+        fusion(j, i, newUserInput, newNewBombMap, board);
+      }
+    }
+    gameClear(newUserInput, newNewBombMap);
   };
 
   const endless = (x: number, y: number, newUserInput: number[][], newBombMap: number[][]) => {
