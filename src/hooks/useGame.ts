@@ -18,6 +18,9 @@ const useGame = () => {
   const [customWidth, setCustomWidth] = useState(9);
   const [customHeight, setCustomHeight] = useState(9);
   const [customBomb, setCustomBomb] = useState(10);
+  const [neoCustomWidth, setNeoCustomWidth] = useState(9);
+  const [neoCustomHeight, setNeoCustomHeight] = useState(9);
+  const [neoCustomBomb, setNeoCustomBomb] = useState(10);
   const [isGameClear, setIsGameClear] = useState(false);
   const [time, setTime] = useState(0);
 
@@ -27,6 +30,9 @@ const useGame = () => {
     level === 'easy' ? 9 : level === 'normal' ? 16 : level === 'hard' ? 16 : customHeight;
   const bomb = level === 'easy' ? 10 : level === 'normal' ? 40 : level === 'hard' ? 99 : customBomb;
 
+  const initialBoard = Array.from({ length: boardWidth }, () =>
+    Array.from({ length: boardHeight }, () => 0),
+  );
   const changeBoard = (width: number, height: number) => {
     const array2D: number[][] = [];
     for (let i = 0; i < height; i++) {
@@ -39,7 +45,7 @@ const useGame = () => {
     return array2D;
   };
 
-  const initialBoard = changeBoard(boardWidth, boardHeight);
+  const board: number[][] = changeBoard(boardWidth, boardHeight);
   const [userInput, setUserInput] = useState(initialBoard);
   const [bombMap, setBombMap] = useState(initialBoard);
 
@@ -185,13 +191,114 @@ const useGame = () => {
     }
   };
 
-  const fusion = (x: number, y: number, newUserInput: number[][], newBombMap: number[][]) => {
-    if (newUserInput[y][x] === 1 && !isFailure && !isGameClear) {
-      newUserInput[y][x] = 0;
-      newBombMap[y][x] = 0;
-      setUserInput(newUserInput);
-      setBombMap(newBombMap);
+  const fusion = (
+    x: number,
+    y: number,
+    newUserInput: number[][],
+    newBombMap: number[][],
+    board: number[][],
+  ) => {
+    if (newBombMap[y] === undefined) return;
+    if (newUserInput[y][x] === 0 && board[y][x] !== 11) {
+      board[y][x] = -1;
     }
+    if (newUserInput[y][x] === 1) {
+      let charge = 0;
+      for (const dir of directions) {
+        if (newBombMap[y + dir[0]] !== undefined && newBombMap[y + dir[0]][x + dir[1]] === 1) {
+          charge++;
+        }
+      }
+      board[y][x] = charge;
+    }
+    if (newUserInput[y][x] === 3) {
+      board[y][x] = 10;
+    }
+    if (newBombMap[y][x] === 1 && newUserInput[y][x] === 1) {
+      board[y][x] = 11;
+      for (let i = 0; i < boardHeight; i++) {
+        if (newBombMap[i] === undefined) break;
+        for (let j = 0; j < boardWidth; j++) {
+          if (newBombMap[i][j] === 1) {
+            board[i][j] = 11;
+          }
+        }
+      }
+
+      return;
+    }
+  };
+  for (let y = 0; y < boardHeight; y++) {
+    for (let x = 0; x < boardWidth; x++) {
+      fusion(x, y, userInput, bombMap, board);
+    }
+  }
+
+  const handleLevelClick = (selectedLevel: levelType) => {
+    setLevel(selectedLevel);
+    setUserInput(
+      changeBoard(
+        selectedLevel === 'easy'
+          ? 9
+          : selectedLevel === 'normal'
+            ? 16
+            : selectedLevel === 'hard'
+              ? 30
+              : selectedLevel === 'custom'
+                ? customWidth
+                : customHeight,
+        selectedLevel === 'easy'
+          ? 9
+          : selectedLevel === 'normal'
+            ? 16
+            : selectedLevel === 'hard'
+              ? 16
+              : selectedLevel === 'custom'
+                ? customHeight
+                : customHeight,
+      ),
+    );
+    setBombMap(
+      changeBoard(
+        selectedLevel === 'easy'
+          ? 9
+          : selectedLevel === 'normal'
+            ? 16
+            : selectedLevel === 'hard'
+              ? 30
+              : selectedLevel === 'custom'
+                ? customWidth
+                : customHeight,
+        selectedLevel === 'easy'
+          ? 9
+          : selectedLevel === 'normal'
+            ? 16
+            : selectedLevel === 'hard'
+              ? 16
+              : selectedLevel === 'custom'
+                ? customHeight
+                : customHeight,
+      ),
+    );
+    setTime(0);
+    setIsGameClear(false);
+    setCustomBomb(neoCustomBomb);
+  };
+
+  const custom = () => {
+    if (neoCustomHeight * neoCustomWidth <= neoCustomBomb) {
+      const neoBombCount = neoCustomHeight * neoCustomWidth - 2;
+      setNeoCustomBomb(neoBombCount);
+      setCustomBomb(neoBombCount);
+    } else {
+      setCustomBomb(neoCustomBomb);
+    }
+    setUserInput(changeBoard(neoCustomWidth, neoCustomHeight));
+    setBombMap(changeBoard(neoCustomWidth, neoCustomHeight));
+    setCustomWidth(neoCustomWidth);
+    setCustomHeight(neoCustomHeight);
+    setIsGameClear(false);
+    setTime(0);
   };
 
   return {
@@ -206,6 +313,11 @@ const useGame = () => {
     bomb,
     userInput,
     bombMap,
+    neoCustomWidth,
+    neoCustomHeight,
+    neoCustomBomb,
+    board,
+    isFailure,
     setLevel,
     setCustomWidth,
     setCustomHeight,
@@ -219,6 +331,11 @@ const useGame = () => {
     onClick,
     rightClick,
     fusion,
+    handleLevelClick,
+    custom,
+    setNeoCustomWidth,
+    setNeoCustomHeight,
+    setNeoCustomBomb,
   };
 };
 
