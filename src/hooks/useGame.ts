@@ -151,6 +151,9 @@ const useGame = () => {
     if (isFailure || isGameClear) {
       return;
     }
+    if (board[y][x] === 10) {
+      return;
+    }
     let charge = 0;
     for (const dir of directions) {
       if (newNewBombMap[y + dir[0]] !== undefined && newNewBombMap[y + dir[0]][x + dir[1]] === 1) {
