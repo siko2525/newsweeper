@@ -140,6 +140,7 @@ const useGame = () => {
 
   const onClick = (x: number, y: number) => {
     const isExistBomb = userInput.flat().some((input) => input === 1);
+    if (userInput[y][x] === 3 || userInput[y][x] === 2) return;
     rightClick(x, y, changeBoard(boardWidth, boardHeight), {
       preventDefault: () => {},
     } as React.MouseEvent<HTMLDivElement, MouseEvent>);
