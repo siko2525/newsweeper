@@ -42,7 +42,10 @@ const Home = () => {
               max={300}
               step="1"
               value={neoCustomWidth}
-              onChange={(e) => setNeoCustomWidth(Number(e.target.value))}
+              onChange={(e) => {
+                const value = Number(e.target.value);
+                setNeoCustomWidth(value < 0 ? 0 : value);
+              }}
               onInput={(e) => {
                 const value = Number((e.target as HTMLInputElement).value);
                 if (!Number.isInteger(value)) {
@@ -59,7 +62,10 @@ const Home = () => {
               max={300}
               step="1"
               value={neoCustomHeight}
-              onChange={(e) => setNeoCustomHeight(Number(e.target.value))}
+              onChange={(e) => {
+                const value = Number(e.target.value);
+                setNeoCustomHeight(value < 0 ? 0 : value);
+              }}
               onInput={(e) => {
                 const value = Number((e.target as HTMLInputElement).value);
                 if (!Number.isInteger(value)) {

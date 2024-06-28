@@ -144,11 +144,11 @@ const useGame = () => {
     rightClick(x, y, changeBoard(boardWidth, boardHeight), {
       preventDefault: () => {},
     } as React.MouseEvent<HTMLDivElement, MouseEvent>);
-    const newBombMap = structuredClone(bombMap);
+    const newBombMap = bombCreate(bombMap, x, y, isExistBomb);
+    setBombMap(newBombMap);
+
     const newUserInput = structuredClone(userInput);
-    const newNewBombMap = bombCreate(newBombMap, x, y, isExistBomb);
-    setBombMap(newNewBombMap);
-    gameClear(newUserInput, newNewBombMap);
+    gameClear(newUserInput, newBombMap);
     if (isFailure || isGameClear) {
       return;
     }
@@ -157,24 +157,24 @@ const useGame = () => {
     }
     let charge = 0;
     for (const dir of directions) {
-      if (newNewBombMap[y + dir[0]] !== undefined && newNewBombMap[y + dir[0]][x + dir[1]] === 1) {
+      if (newBombMap[y + dir[0]] !== undefined && newBombMap[y + dir[0]][x + dir[1]] === 1) {
         charge++;
       }
     }
-    if (newNewBombMap[y][x] === 1) {
+    if (newBombMap[y][x] === 1) {
       newUserInput[y][x] = 1;
     } else if (charge === 0) {
-      endless(x, y, newUserInput, newNewBombMap);
+      endless(x, y, newUserInput, newBombMap);
     } else if (charge >= 1) {
       newUserInput[y][x] = 1;
     }
     setUserInput(newUserInput);
     for (let i = 0; i < boardWidth; i++) {
       for (let j = 0; j < boardHeight; j++) {
-        fusion(j, i, newUserInput, newNewBombMap, board);
+        fusion(j, i, newUserInput, newBombMap, board);
       }
     }
-    gameClear(newUserInput, newNewBombMap);
+    gameClear(newUserInput, newBombMap);
   };
 
   const endless = (x: number, y: number, newUserInput: number[][], newBombMap: number[][]) => {
