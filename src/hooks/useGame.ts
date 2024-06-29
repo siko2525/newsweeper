@@ -139,35 +139,34 @@ const useGame = () => {
   };
 
   const onClick = (x: number, y: number) => {
-    const isExistBomb = userInput.flat().some((input) => input === 1);
     if (userInput[y][x] === 3 || userInput[y][x] === 2) return;
-    rightClick(x, y, changeBoard(boardWidth, boardHeight), {
-      preventDefault: () => {},
-    } as React.MouseEvent<HTMLDivElement, MouseEvent>);
+    if (isFailure || isGameClear) return;
+
+    const isExistBomb = userInput.flat().some((input) => input === 1);
     const newBombMap = bombCreate(bombMap, x, y, isExistBomb);
     setBombMap(newBombMap);
 
     const newUserInput = structuredClone(userInput);
     gameClear(newUserInput, newBombMap);
-    if (isFailure || isGameClear) {
-      return;
-    }
-    if (board[y][x] === 10) {
-      return;
-    }
-    let charge = 0;
-    for (const dir of directions) {
-      if (newBombMap[y + dir[0]] !== undefined && newBombMap[y + dir[0]][x + dir[1]] === 1) {
-        charge++;
-      }
-    }
+
     if (newBombMap[y][x] === 1) {
       newUserInput[y][x] = 1;
-    } else if (charge === 0) {
-      endless(x, y, newUserInput, newBombMap);
-    } else if (charge >= 1) {
-      newUserInput[y][x] = 1;
+    } else {
+      let charge = 0;
+      for (const dir of directions) {
+        const newY = y + dir[0];
+        const newX = x + dir[1];
+        if (newBombMap[newY] !== undefined && newBombMap[newY][newX] === 1) {
+          charge++;
+        }
+      }
+      if (charge === 0) {
+        endless(x, y, newUserInput, newBombMap);
+      } else {
+        newUserInput[y][x] = 1;
+      }
     }
+
     setUserInput(newUserInput);
     for (let i = 0; i < boardWidth; i++) {
       for (let j = 0; j < boardHeight; j++) {
@@ -176,6 +175,9 @@ const useGame = () => {
     }
     gameClear(newUserInput, newBombMap);
   };
+
+  console.table(board);
+  console.table(userInput);
 
   const endless = (x: number, y: number, newUserInput: number[][], newBombMap: number[][]) => {
     if (newBombMap[y][x] === 1 || newUserInput[y][x] === 1) return;
@@ -221,8 +223,8 @@ const useGame = () => {
       }
       board[y][x] = charge;
     }
-    if (newUserInput[y][x] === 3) {
-      board[y][x] = 10;
+    if (newUserInput[y][x] === 3 && isFailure) {
+      board[y][x] = 11;
     }
     if (newBombMap[y][x] === 1 && newUserInput[y][x] === 1) {
       board[y][x] = 11;
