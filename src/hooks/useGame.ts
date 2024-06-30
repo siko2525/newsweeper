@@ -166,18 +166,18 @@ const useGame = () => {
         newUserInput[y][x] = 1;
       }
     }
-
+    rightClick(x, y, changeBoard(boardWidth, boardHeight), {
+      preventDefault: () => {},
+    } as React.MouseEvent<HTMLDivElement, MouseEvent>);
     setUserInput(newUserInput);
     for (let i = 0; i < boardWidth; i++) {
       for (let j = 0; j < boardHeight; j++) {
         fusion(j, i, newUserInput, newBombMap, board);
       }
     }
+    console.table(board);
     gameClear(newUserInput, newBombMap);
   };
-
-  console.table(board);
-  console.table(userInput);
 
   const endless = (x: number, y: number, newUserInput: number[][], newBombMap: number[][]) => {
     if (newBombMap[y][x] === 1 || newUserInput[y][x] === 1) return;
@@ -224,7 +224,7 @@ const useGame = () => {
       board[y][x] = charge;
     }
     if (newUserInput[y][x] === 3 && isFailure) {
-      board[y][x] = 11;
+      board[y][x] = 10;
     }
     if (newBombMap[y][x] === 1 && newUserInput[y][x] === 1) {
       board[y][x] = 11;
@@ -245,7 +245,7 @@ const useGame = () => {
       fusion(x, y, userInput, bombMap, board);
     }
   }
-
+  console.table(board);
   const handleLevelClick = (selectedLevel: levelType) => {
     setLevel(selectedLevel);
     setUserInput(
